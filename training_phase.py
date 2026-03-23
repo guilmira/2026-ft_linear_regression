@@ -1,11 +1,21 @@
+# Fase 2: training. Entrena el modelod de regresion lineal.
+# Se fija para ello la velocidad de aprendizaje y el número de iteraciones.
 import csv
 import sys
 
 intercept_norm = 0
 slope_norm = 0
 # ----- 0. parámetros ajustables
-learning_rate = 1e-2    # velocidad de aprendizaje
-iterations = 1000   # número de iteraciones
+learning_rate = 1e-2
+iterations = 1000
+
+# Sobre la v de aprendizaje:
+# Valor alto, mas reisgo de picos de datos.
+# como lanzar una pelota de tenis demasiado fuerte. Si la velocidad es baja, se necesitaran muchas iteraciones
+
+#Sobre las iteraciones:
+# Valor alto, compute alto. Más recursos gastados.
+# Valor bajo: es posible que no llegue a un buen resultado de pendiente y OO, especialmente si la velocidad de aprendizaje es muy baja.
 
 # ----- 1. lectura de datos
 distance = []

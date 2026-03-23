@@ -1,6 +1,8 @@
+#Fase 1: prediccion. Necesita que la regresion lineal esté calculada
+
 # ----- 1. Intentar leer theta.txt
 theta_file = 'theta.txt'
-theta_set = False  # indica si theta ha sido cargado correctamente
+theta_set = False  # por defecto
 
 try:
     with open(theta_file, 'r') as f:
