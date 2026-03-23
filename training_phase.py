@@ -1,7 +1,6 @@
 import csv
 import sys
 
-
 intercept_norm = 0
 slope_norm = 0
 # ----- 0. parámetros ajustables
@@ -82,3 +81,15 @@ for iteration in range(iterations):
         print(f"\n#----- {iteration+1}. Iteration")
         print(f"intercept: {intercept_real:.4f} (eu)")
         print(f"slope: {slope_real:.8f} (eu/km)")
+
+        # ----- 6. Guardar theta.txt
+slope_real = slope_norm / 100000 * 10000
+intercept_real = intercept_norm * 10000 + mean_price - slope_real * mean_distance
+
+try:
+    with open('theta.txt', 'w') as f:
+        f.write(f"{intercept_real}\n")
+        f.write(f"{slope_real}\n")
+    print("\ntheta.txt guardado correctamente. Fase de predicción ahora usará estos valores.")
+except Exception as e:
+    print("Error al guardar theta.txt:", e)
