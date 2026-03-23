@@ -1,42 +1,66 @@
 import csv
+import sys
 
-# ----- 1. Leer datos
+# ----- 0. Parámetros ajustables
+intercept_norm = 0
+slope_norm = 0
+learning_rate = 1e-6    # velocidad de aprendizaje
+iterations = 1000   # número de iteraciones
+
+# ----- 1. Leer datos con control básico de errores
 distance = []
 price = []
 
-with open('data.csv', newline='') as csvfile:
-    reader = csv.reader(csvfile)
-    next(reader)  # saltar cabecera
-    for row in reader:
-        distance.append(float(row[0]))  # km
-        price.append(float(row[1]))     # eu
-# uso float por lo que pueda venir en un dataset en la eva.
+try:
+    with open('data.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)  # saltar cabecera
+        for row in reader:
+            if len(row) < 2:  # fila incompleta
+                continue
+            try:
+                dist = float(row[0])
+                pr = float(row[1])
+                distance.append(dist)
+                price.append(pr)
+            except ValueError:
+                # fila con datos no numeros
+                continue
+except FileNotFoundError:
+    print("Error: data.csv no existe.")
+    sys.exit(1)
 
 m = len(distance)
-print("Numero de datos:", m)
+if m == 0:
+    print("Error: El .csv no tiene datos.")
+    sys.exit(1)
 
-# ----- 2. Inicializar parametros
-intercept = 0
-slope = 0
-learning_rate = 1e-10
-iterations = 50000
+print("Número de datos:", m)
 
-# ----- 3. Función de predicción
+# ----- 2. Normalizar datos para estabilizar gradient descent
+# Se tienen que normalizar los datos porque si no los datos mucho mayores de distance dominan.
+# La formula de la pendiente no se actualizaria correctamente
+distance_mean = sum(distance) / m
+price_mean = sum(price) / m
+
+distance_norm = [d - distance_mean for d in distance]
+price_norm = [p - price_mean for p in price]
+
+# ----- 3. Función de predicción (en datos normalizados)
 def calculate_price(distance_km, slope, intercept):
-    price_eu = slope * distance_km + intercept
-    return price_eu
+    return slope * distance_km + intercept
 
-# ----- 4. Entrenamiento
+# ----- 4. Entrenamiento con normalización
 for iteration in range(iterations):
 
     sum_error = 0
     sum_error_distance = 0
 
     for i in range(m):
-        dist = distance[i]       # km
-        real_price = price[i]    # eu
+        dist = distance_norm[i]       # km centrados
+        real_price = price_norm[i]    # eu centrados
 
-        prediction = calculate_price(dist, slope, intercept)
+        prediction = calculate_price(dist, slope_norm, intercept_norm)
         error = prediction - real_price
 
         sum_error += error
@@ -45,13 +69,15 @@ for iteration in range(iterations):
     tmp_intercept = learning_rate * (1/m) * sum_error
     tmp_slope = learning_rate * (1/m) * sum_error_distance
 
-    new_intercept = intercept - tmp_intercept
-    new_slope = slope - tmp_slope
-
-    intercept = new_intercept
-    slope = new_slope
+    # actualizar simultáneamente
+    intercept_norm -= tmp_intercept
+    slope_norm -= tmp_slope
 
     # ----- 1. Iteration
-    print(f"\n#----- {iteration+1}. Iteration")
-    print(f"intercept: {intercept:.4f} (eu)")
-    print(f"slope: {slope:.8f} (eu/km)")
+    if (iteration+1) % 100 == 0 or iteration == 0:
+        # convertimos a escala real para imprimir
+        slope_real = slope_norm
+        intercept_real = intercept_norm + price_mean - slope_norm * distance_mean
+        print(f"\n#----- {iteration+1}. Iteration")
+        print(f"intercept: {intercept_real:.4f} (eu)")
+        print(f"slope: {slope_real:.8f} (eu/km)")
