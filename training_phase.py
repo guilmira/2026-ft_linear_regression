@@ -1,13 +1,14 @@
 import csv
 import sys
 
-# ----- 0. Parámetros ajustables
+
 intercept_norm = 0
 slope_norm = 0
-learning_rate = 1e-6    # velocidad de aprendizaje
+# ----- 0. parámetros ajustables
+learning_rate = 1e-2    # velocidad de aprendizaje
 iterations = 1000   # número de iteraciones
 
-# ----- 1. Leer datos con control básico de errores
+# ----- 1. lectura de datos
 distance = []
 price = []
 
@@ -37,28 +38,28 @@ if m == 0:
 
 print("Número de datos:", m)
 
-# ----- 2. Normalizar datos para estabilizar gradient descent
+# ----- 2. normalizar para estabilizar gradient descent (evitar explosion de valores)
 # Se tienen que normalizar los datos porque si no los datos mucho mayores de distance dominan.
 # La formula de la pendiente no se actualizaria correctamente
-distance_mean = sum(distance) / m
-price_mean = sum(price) / m
+mean_distance = sum(distance) / m
+mean_price = sum(price) / m
 
-distance_norm = [d - distance_mean for d in distance]
-price_norm = [p - price_mean for p in price]
+distance_scaled = [(d - mean_distance) / 100000 for d in distance]
+price_scaled = [(p - mean_price) / 10000 for p in price]
 
-# ----- 3. Función de predicción (en datos normalizados)
+# ----- 3. función de predicción (en datos normalizados)
 def calculate_price(distance_km, slope, intercept):
     return slope * distance_km + intercept
 
-# ----- 4. Entrenamiento con normalización
+# ----- 4. entrenamiento con normalización
 for iteration in range(iterations):
 
     sum_error = 0
     sum_error_distance = 0
 
     for i in range(m):
-        dist = distance_norm[i]       # km centrados
-        real_price = price_norm[i]    # eu centrados
+        dist = distance_scaled[i]       # km normalizados
+        real_price = price_scaled[i]    # precio nomralizado
 
         prediction = calculate_price(dist, slope_norm, intercept_norm)
         error = prediction - real_price
@@ -69,15 +70,15 @@ for iteration in range(iterations):
     tmp_intercept = learning_rate * (1/m) * sum_error
     tmp_slope = learning_rate * (1/m) * sum_error_distance
 
-    # actualizar simultáneamente
+    # actualizar simultaneo
     intercept_norm -= tmp_intercept
     slope_norm -= tmp_slope
 
-    # ----- 1. Iteration
+    # -----  iterando y printeando
     if (iteration+1) % 100 == 0 or iteration == 0:
-        # convertimos a escala real para imprimir
-        slope_real = slope_norm
-        intercept_real = intercept_norm + price_mean - slope_norm * distance_mean
+        # convertir a escala real para imprimir
+        slope_real = slope_norm / 100000 * 10000  # porque dividimos distance y price
+        intercept_real = intercept_norm * 10000 + mean_price - slope_real * mean_distance
         print(f"\n#----- {iteration+1}. Iteration")
         print(f"intercept: {intercept_real:.4f} (eu)")
         print(f"slope: {slope_real:.8f} (eu/km)")
