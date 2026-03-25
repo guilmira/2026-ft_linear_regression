@@ -1,5 +1,17 @@
-#Fase 1: prediccion. Necesita que la regresion lineal esté calculada
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    prediction_phase.py                                :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/03/25 16:28:05 by guilmira          #+#    #+#              #
+#    Updated: 2026/03/25 16:33:51 by guilmira         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
+
+#Fase 1: prediccion. Necesita que la regresion lineal esté calculada
 
 # ----- Función de predicción
 def calculate_price(distance_km, slope, intercept):

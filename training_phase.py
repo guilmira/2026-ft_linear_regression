@@ -1,24 +1,22 @@
-# Fase 2: training. Entrena el modelod de regresion lineal.
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    1-training_phase.py                                :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/03/25 16:28:12 by guilmira          #+#    #+#              #
+#    Updated: 2026/03/25 16:31:51 by guilmira         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# Fase 2: training. Entrena el modelo de regresion lineal.
 # Se fija para ello la velocidad de aprendizaje y el número de iteraciones.
 import csv
 import sys
+from prediction_phase import calculate_price
 
-def linear_regression:
-    intercept_norm = 0
-    slope_norm = 0
-    # ----- 0. parámetros ajustables
-    learning_rate = 1e-2
-    iterations = 1000
-
-    # Sobre la v de aprendizaje:
-    # Valor alto, mas reisgo de picos de datos.
-    # como lanzar una pelota de tenis demasiado fuerte. Si la velocidad es baja, se necesitaran muchas iteraciones
-
-    #Sobre las iteraciones:
-    # Valor alto, compute alto. Más recursos gastados.
-    # Valor bajo: es posible que no llegue a un buen resultado de pendiente y OO, especialmente si la velocidad de aprendizaje es muy baja.
-
-    # ----- 1. lectura de datos
+def file_reader(file):
     distance = []
     price = []
 
@@ -38,8 +36,18 @@ def linear_regression:
                     # fila con datos no numeros
                     continue
     except FileNotFoundError:
-        print("Error: data.csv no existe.")
+        print(f"Error: {file} no existe.")
         sys.exit(1)
+    
+    return distance, price
+
+def linear_regression(learning_rate, iterations):
+    
+    intercept_norm = 0
+    slope_norm = 0
+
+    # ----- 1. lectura de datos
+    distance, price = file_reader("data.csv")
 
     m = len(distance)
     if m == 0:
@@ -51,15 +59,14 @@ def linear_regression:
     # ----- 2. normalizar para estabilizar gradient descent (evitar explosion de valores)
     # Se tienen que normalizar los datos porque si no los datos mucho mayores de distance dominan.
     # La formula de la pendiente no se actualizaria correctamente
+
+    #Se calculan medias
     mean_distance = sum(distance) / m
     mean_price = sum(price) / m
-
+    
+    #normalizacion hardcodeada
     distance_scaled = [(d - mean_distance) / 100000 for d in distance]
     price_scaled = [(p - mean_price) / 10000 for p in price]
-
-    # ----- 3. función de predicción (en datos normalizados)
-    def calculate_price(distance_km, slope, intercept):
-        return slope * distance_km + intercept
 
     # ----- 4. entrenamiento con normalización
     for iteration in range(iterations):
@@ -105,5 +112,16 @@ def linear_regression:
     except Exception as e:
         print("Error al guardar theta.txt:", e)
 
+# Sobre la v de aprendizaje:
+# Valor alto, mas reisgo de picos de datos.
+# como lanzar una pelota de tenis demasiado fuerte. Si la velocidad es baja, se necesitaran muchas iteraciones
+
+#Sobre las iteraciones:
+# Valor alto, compute alto. Más recursos gastados.
+# Valor bajo: es posible que no llegue a un buen resultado de pendiente y OO, especialmente si la velocidad de aprendizaje es muy baja.
 if __name__ == '__main__':
-    linear_regression()
+
+    learning_rate = 1e-2
+    iterations = 1000
+
+    linear_regression(learning_rate, iterations)

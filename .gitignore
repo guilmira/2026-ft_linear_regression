@@ -2,6 +2,8 @@ plot.png
 plot_data.py
 theta.txt
 install.sh
+virtual
+venv
 
 # own
 .DS_Store
