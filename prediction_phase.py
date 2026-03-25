@@ -16,7 +16,7 @@ def print_result(theta_set, predicted_price):
     else:   
         print(f"Precio estimado: {predicted_price:.2f} (eu)")
 
-def main():
+def prize_prediction():
 
     # ----- 1. Leer archivo
     theta_file = 'theta.txt' #hardcode
@@ -59,4 +59,4 @@ def main():
     print_result(theta_set, predicted_price)
 
 if __name__ == '__main__' :
-    main()
+    prize_prediction()
