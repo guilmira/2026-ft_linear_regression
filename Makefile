@@ -6,7 +6,7 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/25 16:27:56 by guilmira          #+#    #+#              #
-#    Updated: 2026/03/25 16:42:56 by guilmira         ###   ########.fr        #
+#    Updated: 2026/03/25 17:41:41 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ install:
 	@test -d $(VIRTUAL_ENV_NAME) || python3 -m venv $(VIRTUAL_ENV_NAME)
 #solo crea entorno si el entorno no existe
 
+#falta commo hacer el activate aqui
 activate:
 	source $(VIRTUAL_ENV_NAME)/bin/activate
 
