@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    1-training_phase.py                                :+:      :+:    :+:    #
+#    training_phase.py                                  :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/25 16:28:12 by guilmira          #+#    #+#              #
-#    Updated: 2026/03/25 16:31:51 by guilmira         ###   ########.fr        #
+#    Updated: 2026/03/26 14:11:43 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ def file_reader(file):
     price = []
 
     try:
-        with open('data.csv', newline='') as csvfile:
+        with open("data.csv", newline="") as csvfile:
             reader = csv.reader(csvfile)
             next(reader)  # saltar cabecera
             for row in reader:
@@ -65,10 +65,19 @@ def linear_regression(learning_rate, iterations):
     mean_price = sum(price) / m
     
     #normalizacion hardcodeada
-    distance_scaled = [(d - mean_distance) / 100000 for d in distance]
-    price_scaled = [(p - mean_price) / 10000 for p in price]
+    # Para distance_scaled
+    distance_scaled = []                 # inicializamos la lista vacía
+    price_scaled = []
 
-    # ----- 4. entrenamiento con normalización
+    for d in distance:
+        scaled_value = (d - mean_distance) / 100000
+        distance_scaled.append(scaled_value)
+
+    for p in price:
+        scaled_value = (p - mean_price) / 10000
+        price_scaled.append(scaled_value)
+
+    # ----- 3. entrenamiento con normalización
     for iteration in range(iterations):
 
         sum_error = 0

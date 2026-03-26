@@ -6,7 +6,7 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/25 16:27:56 by guilmira          #+#    #+#              #
-#    Updated: 2026/03/26 12:33:56 by guilmira         ###   ########.fr        #
+#    Updated: 2026/03/26 14:04:16 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,23 +30,30 @@ install:
 	@test -d $(VIRTUAL_ENV_NAME) || $(PYTHON_OS) -m venv $(VIRTUAL_ENV_NAME)
 
 help:
-	@echo "Comandos para activar y desactivar el entorno virtual del proyecto:"
+	@echo "Comandos para ejecutar el proyecto en su entorno virtual:"
 	@echo "Para activar: 		 'source $(VIRTUAL_ENV_NAME)/bin/activate'"
-	@echo "Para desactivar: 	 'deactivate' para salir"
+	@echo "Para ejecutar:		 'make run'"
+	@echo "Para desactivar: 	 'deactivate'"
 
 deps:
 	@test -d $(VIRTUAL_ENV_NAME) || { echo "No existe el entorno virtual. Ejecuta 'make install' primero."; exit 1; }
 	@test "$$VIRTUAL_ENV" = "$(PWD)/$(VIRTUAL_ENV_NAME)" || { echo "No estás dentro del entorno virtual. Haz 'make help' primero y activa el entorno"; exit 1; }
 	pip install --upgrade --quiet $(DEPS)
 
-bonus: deps
-	$(PYTHON_OS) $(SRC3)
-	
 run:
 	@test -d $(VIRTUAL_ENV_NAME) || { echo "No existe el entorno virtual. Ejecuta 'make install' primero."; exit 1; }
 	@test "$$VIRTUAL_ENV" = "$(PWD)/$(VIRTUAL_ENV_NAME)" || { echo "No estás dentro del entorno virtual. Haz 'make help' primero y activa el entorno"; exit 1; }
 	$(PYTHON_OS) $(SRC2)
 	$(PYTHON_OS) $(SRC1)
+
+prediction:
+	$(PYTHON_OS) $(SRC1)
+	
+training:
+	$(PYTHON_OS) $(SRC2)
+
+bonus: deps
+	$(PYTHON_OS) $(SRC3)
 
 clean:
 	@rm -rf __pycache__

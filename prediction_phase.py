@@ -6,7 +6,7 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/25 16:28:05 by guilmira          #+#    #+#              #
-#    Updated: 2026/03/25 16:33:51 by guilmira         ###   ########.fr        #
+#    Updated: 2026/03/26 13:52:31 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,12 +28,9 @@ def print_result(theta_set, predicted_price):
     else:   
         print(f"Precio estimado: {predicted_price:.2f} (eu)")
 
-def prize_prediction():
-
-    # ----- 1. Leer archivo
-    theta_file = 'theta.txt' #hardcode
-    theta_set = False  # por defecto
-
+def theta_reader(theta_file):
+    theta_set = False #por defecto
+    
     try:
         with open(theta_file, 'r') as f:
             lines = f.readlines()
@@ -54,7 +51,17 @@ def prize_prediction():
         print("theta.txt no adecuado. Se usan valores por defecto.")
         intercept = 0
         slope = 0
+    
+    return theta_set, slope, intercept
 
+
+def prize_prediction():
+
+    # ----- 1. Leer archivo
+    theta_file = "theta.txt"
+    theta_set = False  # por defecto
+    theta_set, slope, intercept = theta_reader(theta_file)
+    
     # ----- 2. Inputs
     try:
         distance_input = input("Introduce la distancia del coche (km, >0): ")
