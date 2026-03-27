@@ -6,7 +6,7 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/26 11:32:54 by guilmira          #+#    #+#              #
-#    Updated: 2026/03/26 14:14:36 by guilmira         ###   ########.fr        #
+#    Updated: 2026/03/27 10:23:06 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,8 @@ class dotPlotter:
         
     def generate_file(self):
         plt.savefig("result.png")
+
+    #getter y setter no incluidos
 
 if __name__ == '__main__' :
     plotter = dotPlotter("data.csv")

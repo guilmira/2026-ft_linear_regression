@@ -6,7 +6,7 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/25 16:27:56 by guilmira          #+#    #+#              #
-#    Updated: 2026/03/26 14:04:16 by guilmira         ###   ########.fr        #
+#    Updated: 2026/03/27 10:44:58 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ install:
 	@test -d $(VIRTUAL_ENV_NAME) || $(PYTHON_OS) -m venv $(VIRTUAL_ENV_NAME)
 
 help:
-	@echo "Comandos para ejecutar el proyecto en su entorno virtual:"
+	@echo "Comandos para ejecutar el proyecto en el entorno virtual:"
 	@echo "Para activar: 		 'source $(VIRTUAL_ENV_NAME)/bin/activate'"
 	@echo "Para ejecutar:		 'make run'"
 	@echo "Para desactivar: 	 'deactivate'"
