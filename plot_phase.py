@@ -6,7 +6,7 @@
 #    By: guilmira <guilmira@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/26 11:32:54 by guilmira          #+#    #+#              #
-#    Updated: 2026/03/27 10:23:06 by guilmira         ###   ########.fr        #
+#    Updated: 2026/04/02 17:57:10 by guilmira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ import pandas
 import matplotlib.pyplot as plt
 from prediction_phase import theta_reader
 
-class dotPlotter:
+class DotPlotter:
     #Constructor
     def __init__(self, dataset):
         self._dataset = dataset
@@ -45,7 +45,7 @@ class dotPlotter:
     #getter y setter no incluidos
 
 if __name__ == '__main__' :
-    plotter = dotPlotter("data.csv")
+    plotter = DotPlotter("data.csv")
     
     theta_set, slope, intercept = theta_reader("theta.txt")
 
